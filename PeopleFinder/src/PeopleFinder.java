@@ -80,7 +80,7 @@ public class PeopleFinder extends HttpServlet {
 			rs = st.executeQuery(sql);
 			while(rs.next()) {
 				if(count==0){
-				message += "<table border=2 width = 20% background-color:Light grey >"; 
+				message += "<table class = 'table table-bordered table-striped'>"; 
 				message+="<br></br>";
 				message += "<tr><th><b>First Name</b></th><th><b>Last Name</b></th></tr>";	
 				}
@@ -104,7 +104,7 @@ public class PeopleFinder extends HttpServlet {
 		String sql="",message="";
 		ResultSet rs1=null;
 		int count=0;
-		sql ="select COMPANY_ID,COMPANY  from companies where COMPANY like '%" +searchText +"%'";
+		sql ="select COMPANY_ID,COMPANY  from company where COMPANY like '%" +searchText +"%'";
 	
 		
 		System.out.println(sql);
@@ -113,7 +113,7 @@ public class PeopleFinder extends HttpServlet {
 			while(rs1.next()) {
 				if(count==0){
 				//message= "<p>Companies found:</p>";
-				message += "<table border=2 width = 20% background-color:Light grey >"; 
+				message += "<table class = 'table table-bordered table-striped'>"; 
 				message+="<br></br>";
 				message += "<tr><th><b>Company Id</b></th><th><b>Company Name</b></th></tr>";
 				}					

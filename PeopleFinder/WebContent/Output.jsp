@@ -20,9 +20,9 @@ text-align: center;
 table{
 	text-align:center;
 	border-color:#00ffff;
-	background-color: grey;
 	border-collapse: seperate;
-	color: black
+	color: black;
+	width: 30%
 }
 body {
 	font-family: "Times new roman";

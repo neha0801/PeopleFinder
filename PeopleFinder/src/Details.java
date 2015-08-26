@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,6 +33,7 @@ public class Details extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		String  compId= request.getParameter("companyId");
+		String message="";
 		
 		String url = "jdbc:oracle:thin:testuser/password@localhost";
 		Properties props = new Properties();
@@ -45,24 +44,47 @@ public class Details extends HttpServlet {
 			Connection con = DriverManager.getConnection(url, props);
 			Statement st = con.createStatement();
 			System.out.println("connection established successfully...!!");
-			String sql="Select * from People where concat(firstname,lastName)  = '" + name+"'";
-			System.out.println(sql);
-			ResultSet rs = st.executeQuery(sql);
-			name+="<br></br>";
-		
-			name += "<table border=2 width = 60% background-color:Light grey>"; 
-			/*name += "<tr><td><b> Customer Name</b> </td><td> <b>Street Address</b> </td><td> <b> City </b></td></td><td> <b> State </b></td></td><td> <b> Zip Code </b></td>" +
-					"</td><td> <b> Home Number </b></td> </td><td> <b> Cell Number </b></td> </td><td> <b> Credit Limit </b></td> </td><td> <b> Email </b></td></tr>";
-			*/
-			rs.next();
-			name+= "<tr><td>" + rs.getString(2) + " " + rs.getString(3) + "</td><td>"
-					+ rs.getString(4) + " " + rs.getString(5) + "</td><td>" + rs.getString(6) +"</td><td>" + rs.getString(7) + "</td><td>" + rs.getString(8) 
-					+ "</td><td>" + rs.getString(9) + "</td><td>" + rs.getString(10) + "</td><td>" + rs.getString(11)   + "</td><td>" + rs.getString(12) ;
+			message+="<br></br>";
+			
+			message += "<table class = 'table table-bordered table-striped'>"; 
+			if(name!=null){
+				String sql = "SELECT p.FULLNAME, p.TITLE, p.FIRSTNAME,"+
+						  "p.LASTNAME,  p.STREETADDRESS,  l.CITY,"
+						  +"l.STATES,  p.ZIPCODE,  p.EMAILADDRESS,"+
+						  "p.POSITIONS,  c.COMPANY	FROM people p	JOIN company c "+
+						  "ON p.COMPANY_ID=c.COMPANY_ID	JOIN location l ON l.LOCATION_ID= p.LOCATION_ID "
+						  + "where concat(p.firstname,p.lastName)  = '"+ name +"'";
+				System.out.println(sql);
+				ResultSet rs = st.executeQuery(sql);
+
+				message += "<tr><th><b> Full Name</b> </th><th> <b>Title</b> </th><th> <b> First Name </b></th><th> <b> Last Name </b></th><th> <b> Street Address </b>" +
+						"</th><th> <b> City </b></th><th> <b> State </b></th><th> <b> Zipcode </b></th><th> <b> Email Address </b></th><th><b> Position </b></th><th><b> Company </b></th></tr>";
+				
+				if(rs.next()){
+					message+= "<tr><td>" + rs.getString(1) + "</td><td>" + rs.getString(2) + "</td><td>"
+						+ rs.getString(3) + "</td><td>" + rs.getString(4) + "</td><td>" + rs.getString(5) +"</td><td>" + rs.getString(6) + "</td><td>" + rs.getString(7) 
+						+ "</td><td>" + rs.getString(8) + "</td><td>" + rs.getString(9) + "</td><td>" + rs.getString(10)   + "</td><td>" + rs.getString(11) +"</td></tr>";
+				}
+				
+			} else if (compId!=null){
+				String sql = "SELECT COMPANY_id,Company	FROM company where COMPANY_id = "+ compId ;
+				System.out.println(sql);
+				ResultSet rs = st.executeQuery(sql);
+
+				message += "<tr><th><b> Company ID </b></th> <th> <b> Company </b></th></tr>";
+				
+				if(rs.next()){
+				message+= "<tr><td>" + rs.getString(1) + "</td><td>"  + rs.getString(2) + "</td></tr>" ;
+				}
+
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		name+="<br></br>";
-		request.setAttribute("message", name);
+		message+="<br></br>";
+		message+="</table>";
+		message+="<a class='btn pull-left btn-primary btn-lg' href='FindPeople.jsp'>Home Page</a>";
+		request.setAttribute("message", message);
 		getServletContext().getRequestDispatcher("/Output.jsp").forward(
 				request, response);
 	}

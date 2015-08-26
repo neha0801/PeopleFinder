@@ -33,7 +33,7 @@ nav{
 </head>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-      <div class="navbar-header">Customers</a>
+      <div class="navbar-brand">Customers</a>
     </div>
     <div>
       <ul class="nav navbar-nav">
@@ -49,7 +49,7 @@ nav{
 			<h1>People Finder tool</h1>
 				<label style=font-size:20px>Search</label>
 				<input type="text" name="search"></input><br></br>
-				<input type="submit" class="btn pull-left btn-info btn-lgvalue="value="Search"></input><br></br>
+				<input type="submit" class="btn pull-left btn-primary btn-lg" value="Search"></input><br></br>
 			</form>
 			
 </div>
